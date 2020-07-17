@@ -8,9 +8,10 @@ from os import path
 import json, requests, urllib
 
 config_filename = "config.secret.json" if path.exists("config.secret.json") else "config.json"
+config_file = open(config_filename)
 config = json.load(open(config_filename))
-con_file.close()
-print(config['apikey'])
+config_file.close()
+#print(config['apikey'])
 
 
 # In[ ]:
