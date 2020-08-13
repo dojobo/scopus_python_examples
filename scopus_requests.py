@@ -17,15 +17,23 @@ config_file.close()
 # In[ ]:
 
 
+headers = {"X-ELS-APIKey": config["apikey"]}
+# some query parameters require an insttoken, which must be requested from Elsevier
+if len(config["insttoken"]) > 0:
+    headers["X-ELS-Insttoken"] = config["insttoken"]
+
 # search in each of the journals by ISSN, for "machine learning" in title/abstract/keywords:
 issns = ["00218561"]
 all_results = {}
 for issn in issns:
-    plain_query = "TITLE-ABS-KEY(\"machine learning\") AND ISSN({0})".format(issn)
-    query_str = urllib.parse.urlencode({"query": plain_query, "apiKey": config['apikey'] })
+    search_string = "TITLE-ABS-KEY(\"machine learning\") AND ISSN({0})".format(issn)
+    query_params = {"query": search_string}
+    #query_params["view"] = "COMPLETE" # add more query params here
+    query_str = urllib.parse.urlencode(query_params)
     url_str = "https://api.elsevier.com/content/search/scopus?{0}".format(query_str)
     #print(url_str)
-    r = requests.get(url_str)
+    
+    r = requests.get(url_str, headers=headers)
     #print(r.status_code)
     #print(r.json())
     all_results.update({issn: r.json()})
