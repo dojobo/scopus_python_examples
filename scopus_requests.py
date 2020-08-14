@@ -40,3 +40,7 @@ for issn in issns:
 
 print(all_results)
 
+# save all_results as a JSON file:
+#with open('results.json', 'w') as outfile:
+#    json.dump(all_results.json(), outfile)
+
